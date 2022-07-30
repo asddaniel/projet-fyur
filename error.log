@@ -1,0 +1,19 @@
+
+2022-07-27 15:07:16,885 INFO: errors [in c:\Users\Daniel\Desktop\projet-fyur\app.py:512]
+2022-07-27 16:15:13,291 ERROR: Exception on /venues/create [POST] [in C:\Users\Daniel\AppData\Local\Programs\Python\Python310\lib\site-packages\flask\app.py:1449]
+Traceback (most recent call last):
+  File "C:\Users\Daniel\AppData\Local\Programs\Python\Python310\lib\site-packages\flask\app.py", line 2073, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\Daniel\AppData\Local\Programs\Python\Python310\lib\site-packages\flask\app.py", line 1519, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\Daniel\AppData\Local\Programs\Python\Python310\lib\site-packages\flask\app.py", line 1517, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\Daniel\AppData\Local\Programs\Python\Python310\lib\site-packages\flask\app.py", line 1503, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+  File "c:\Users\Daniel\Desktop\projet-fyur\app.py", line 232, in create_venue_submission
+    @app.route('/venues/create', methods=['GET'])
+  File "C:\Users\Daniel\AppData\Local\Programs\Python\Python310\lib\site-packages\flask\helpers.py", line 389, in flash
+    session["_flashes"] = flashes
+  File "C:\Users\Daniel\AppData\Local\Programs\Python\Python310\lib\site-packages\flask\sessions.py", line 97, in _fail
+    raise RuntimeError(
+RuntimeError: The session is unavailable because no secret key was set.  Set the secret_key on the application to something unique and secret.
