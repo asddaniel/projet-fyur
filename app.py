@@ -98,9 +98,9 @@ def show_venue(venue_id):
 
   element["past_show"]=[]
   element["upcoming_show"]=[]
-  start_time = Show.query.filter_by(venue_id = venue_id).first().start_time
-  past_shows_query = db.session.query(Show).join(Venue).filter(Show.venue_id==venue_id).filter(datetime.strptime(start_time, "%d/%m/%Y %H:%M")<datetime.now()).all()
-  upcoming_shows_query = db.session.query(Show).join(Venue).filter(Show.venue_id==venue_id).filter(datetime.strptime(start_time, "%d/%m/%Y %H:%M")>datetime.now()).all()
+  start_time = Show.query.order_by('start_time').first().start_time
+  past_shows_query = db.session.query(Show).join(Venue).filter(Show.venue_id==venue_id).filter(datetime.strptime(start_time, "%Y-%m-%d %H:%M:%S")<datetime.now()).all()
+  upcoming_shows_query = db.session.query(Show).join(Venue).filter(Show.venue_id==venue_id).filter(datetime.strptime(start_time, "%Y-%m-%d %H:%M:%S")>datetime.now()).all()
 
 
   element["past_shows_count"]=len(past_shows_query)
@@ -203,7 +203,7 @@ def show_artist(artist_id):
   sd=[]
   ups =[]
   for e in element["show"]:
-    if(datetime.strptime(e.start_time, "%d/%m/%Y %H:%M")<datetime.now()):
+    if(datetime.strptime(e.start_time, "%Y-%m-%d %H:%M:%S")<datetime.now()):
       sd.append({"venue_id": e.venue_id,
       "venue_name": e.venue.name,
       "venue_image_link": e.venue.image_link,
