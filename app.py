@@ -84,7 +84,7 @@ def show_venue(venue_id):
   # TODO: replace with real venue data from the venues table, using venue_id
 
   venue = Venue.query.filter_by(id= venue_id).first()
-  element = {
+  element = { #formatting the important dictionary data
     "id": venue.id,
     "name": venue.name, 
     "city":venue.city, 
