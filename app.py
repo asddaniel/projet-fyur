@@ -45,19 +45,26 @@ def index():
 def venues():
   # TODO: replace with real venues data.
   #       num_upcoming_shows should be aggregated based on number of upcoming shows per venue.
- 
-  donnees = Venue.query.all()
-  data =[]
-  data_id = []
-  for element in donnees:
+  venues = Venue.query.distinct(Venue.state, Venue.city).all()
+  data = []
+  for element in venues:
     liste = {
       "city": element.city,
       "state": element.state,
-      "venues": Venue.query.filter(Venue.city==element.city and Venue.state == element.state)
+      "id": element.id,
+      "venues": []
     }
-    
+    all_venues = Venue.query.filter(Venue.city==element.city, Venue.state==element.state).all()
+    for e in all_venues:
+      liste["venues"].append(
+        {
+          "id": e.id,
+          "name": e.name,
+          "num_upcoming_shows": len([show for show in e.show if datetime.strptime(str(show.start_time), "%Y-%m-%d %H:%M:%S") > datetime.now()])
+        }
+      )
     data.append(liste)
-
+ 
 
 
 
@@ -97,16 +104,28 @@ def show_venue(venue_id):
   }
   data = []
 
-  element["past_show"]=[]
-  element["upcoming_show"]=[]
+  element["past_shows"]=[]
+  element["upcoming_shows"]=[]
   start_time = Show.query.order_by('start_time').first().start_time
   past_shows_query = db.session.query(Show).join(Venue).filter(Show.venue_id==venue_id).filter(datetime.strptime(start_time, "%Y-%m-%d %H:%M:%S")<datetime.now()).all()
   upcoming_shows_query = db.session.query(Show).join(Venue).filter(Show.venue_id==venue_id).filter(datetime.strptime(start_time, "%Y-%m-%d %H:%M:%S")>datetime.now()).all()
-
+  
+  for show in past_shows_query:
+    element["past_shows"].append({
+      "artist_id": show.artist_id,
+      "artist_name": show.artist.name,
+      "start_time": show.start_time
+    })
+  for show in upcoming_shows_query:
+    element["past_shows"].append({
+      "artist_id": show.artist_id,
+      "artist_name": show.artist.name,
+      "start_time": show.start_time
+    })
 
   element["past_shows_count"]=len(past_shows_query)
-  element["past_shows"]=past_shows_query
-  element["upcoming_shows"]=upcoming_shows_query
+  # element["past_shows"]=past_shows_query
+  #element["upcoming_shows"]=upcoming_shows_query
   element["upcoming_shows_count"]=len(upcoming_shows_query)
   data.append(element)
 
